@@ -1,0 +1,4 @@
+{% load app_plugins %}
+{% for app in app_plugin_apps %}
+{% app_plugin app app_plugin_point app_plugin_ext %}
+{% endfor %}
