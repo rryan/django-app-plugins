@@ -225,7 +225,6 @@ def plugin_point(context, name, point=None, user=None, ext='.html', **args):
         apps = [ p.app for p in plugins ]
     nc.update(args)
     nc.push()
-    print "Plugins:", plugins
     nc['app_plugin_ext'] = ext
     nc['app_plugin_point'] = name
     nc['app_plugin_apps'] = apps
