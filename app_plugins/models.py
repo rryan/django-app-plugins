@@ -44,10 +44,6 @@ class PluginPoint(models.Model):
     status     = models.SmallIntegerField(choices=STATUS_CHOICES,
                                           default=ENABLED)
 
-    class Admin:
-        list_display = ('label', 'index', 'registered', 'status')
-        list_filter = ('registered', 'status')
-
     class Meta:
         ordering = ('index', 'id')
 
@@ -116,10 +112,6 @@ class Plugin(models.Model):
     template   = models.CharField(max_length=2048,
                     help_text=_("template to load for the plugin."))
 
-    class Admin:
-        list_display = ('label', 'index', 'registered', 'required', 'status')
-        list_filter = ('registered', 'status')
-
     class Meta:
         order_with_respect_to = 'point'
         ordering = ('point', 'index', 'id')
@@ -162,10 +154,6 @@ class UserPluginPreference(models.Model):
     plugin  = models.ForeignKey(Plugin)
     visible = models.BooleanField(default=True)
     index   = models.IntegerField(default=0)
-
-    class Admin:
-        list_display = ('plugin', 'user', 'index', 'visible')
-        list_filter = ('visible',)
 
     class Meta:
         unique_together = ['user', 'plugin']
