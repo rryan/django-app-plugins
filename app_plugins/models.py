@@ -109,7 +109,7 @@ class Plugin(models.Model):
 
     required   = models.BooleanField(default=False,
                     help_text=_("users can not remove this plugin."))
-    template   = models.CharField(max_length=2048,
+    template   = models.TextField(
                     help_text=_("template to load for the plugin."))
 
     class Meta:
