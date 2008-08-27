@@ -1,5 +1,4 @@
 from django.db import models
-from django.core.validators import ValidationError
 from django.db.models import Q
 from django.utils.translation import ugettext_lazy as _
 from django.contrib.auth.models import User
@@ -26,15 +25,9 @@ def construct_template_path(app, name, ext='.html'):
     if not is_valid_label(app): raise RuntimeError, u"invalid label: " + app
     return '/'.join([app.split('.')[-1], 'plugins', name.replace('.','/')])+ext
 
-def isPackageLabel(field_data, all_data):
-    if not LABEL_RE.search(field_data):
-        raise ValidationError, _("This value must contain only letters, "
-                                 "numbers, underscores, and '.' dots.")
-
 
 class PluginPoint(models.Model):
     label      = models.CharField(max_length=256, unique=True,
-                    validator_list=[isPackageLabel,],
                     help_text=_("The label for the plugin point."))
     index      = models.IntegerField(default=0)
 
@@ -97,7 +90,6 @@ class PluginPoint(models.Model):
 class Plugin(models.Model):
     point      = models.ForeignKey(PluginPoint)
     label      = models.CharField(max_length=512, unique=True,
-                    validator_list=[isPackageLabel,],
                     help_text=_("The label for the plugin point."))
 
     index      = models.IntegerField(default=0)
