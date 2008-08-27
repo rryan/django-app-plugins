@@ -21,7 +21,7 @@ class AdminPluginPointForm(forms.ModelForm):
         value = self.cleaned_data["label"]
         return validate_label(value)
 
-class AdminPluginForm(forms.Model):
+class AdminPluginForm(forms.ModelForm):
     class Meta:
         model = Plugin
     
