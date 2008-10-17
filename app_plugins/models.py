@@ -89,7 +89,7 @@ class PluginPoint(models.Model):
 
 class Plugin(models.Model):
     point      = models.ForeignKey(PluginPoint)
-    label      = models.CharField(max_length=512, unique=True,
+    label      = models.CharField(max_length=256, unique=True,
                     help_text=_("The label for the plugin point."))
 
     index      = models.IntegerField(default=0)
