@@ -37,7 +37,7 @@ class Command(NoArgsCommand):
     def handle_noargs(self, **options):
         sync_app_plugins(options.get('delete', False))
 
-def sync_app_plugins(delete_removed=False):
+def sync_app_plugins(delete_removed=False, verbosity=1):
     """
     We need to do a complicated dance to sync the current registered and
     unregistered implicit plugins and points with the instances in the DB.
@@ -85,11 +85,13 @@ def sync_app_plugins(delete_removed=False):
         for label in lib.plugin_points:
             pp = instances.pop(label, None)
             if pp is None:
-                print "Creating registered PluginPoint:", label
+                if verbosity > 1:
+                    print "Creating registered PluginPoint:", label
                 pp = PluginPoint(label=label)
             pp.registered = True
             if pp.status == REMOVED:
-                print "Updating registered PluginPoint:", label
+                if verbosity > 1:
+                    print "Updating registered PluginPoint:", label
                 # re-enable a previously removed plugin point and its plugins
                 pp.status = ENABLED
                 for p in Plugin.objects.filter(point=pp, status=REMOVED):
@@ -117,7 +119,8 @@ def sync_app_plugins(delete_removed=False):
             if p is None:
                 p = Plugin()
                 p.label = label
-                print "Creating registered Plugin:", label
+                if verbosity > 1:
+                    print "Creating registered Plugin:", label
                 try:
                     point = PluginPoint.objects.get(label=point_label)
                     p.point = point
@@ -128,14 +131,16 @@ def sync_app_plugins(delete_removed=False):
                             point.registered = False
                         point.save()
                 except PluginPoint.DoesNotExist:
-                    print "Creating unregistered PluginPoint:", point_label
+                    if verbosity > 1:
+                        print "Creating unregistered PluginPoint:", point_label
                     point = PluginPoint(label=point_label)
                     point.save()
                     p.point = point
             p.registered = True
             if p.status == REMOVED:
                 # re-enable a previously removed plugin
-                print "Updating registered Plugin:", p.label
+                if verbosity > 1:
+                    print "Updating registered Plugin:", p.label
                 p.status = ENABLED
             options = lib.get_plugin_call(point_label).options
             default = construct_template_path(lib.app_name, point_label,
@@ -168,14 +173,16 @@ def sync_app_plugins(delete_removed=False):
             p = instances.get(label, None)
             if p is None:
                 if bFound:
-                    print "Creating unregistered Plugin:", label
+                    if verbosity > 1:
+                        print "Creating unregistered Plugin:", label
                     p = Plugin(point=pp, label=label, template=template)
             else:
                 if p.status == REMOVED and bFound:
                     p.status = ENABLED
                     p.template = template
                     p.registered = False
-                    #print "Updating unregistered Plugin:", label
+                    #if verbosity > 1:
+                    #    print "Updating unregistered Plugin:", label
                 elif not p.registered and not bFound and p.status != REMOVED:
                     p.status = REMOVED
                 else:
@@ -186,7 +193,8 @@ def sync_app_plugins(delete_removed=False):
     ## section 6 - removed unregistered plugin points
     for pp in PluginPoint.objects.filter(registered=False).exclude(status=REMOVED):
         if not pp.plugin_set.exclude(status=REMOVED).count():
-            print "Removing unregistered PluginPoint:", pp.label
+            if verbosity > 1:
+                print "Removing unregistered PluginPoint:", pp.label
             pp.status = REMOVED
             pp.save()
 
@@ -194,9 +202,11 @@ def sync_app_plugins(delete_removed=False):
     if delete_removed:
         count = Plugin.objects.filter(status=REMOVED).count()
         if count:
-            print "Deleting %d Removed Plugins" % count
+            if verbosity > 1:
+                print "Deleting %d Removed Plugins" % count
             Plugin.objects.filter(status=REMOVED).delete()
         count = PluginPoints.objects.filter(status=REMOVED).count()
         if count:
-            print "Deleting %d Removed PluginPoint" % count
+            if verbosity > 1:
+                print "Deleting %d Removed PluginPoint" % count
             PluginPoints.objects.filter(status=REMOVED).delete()
