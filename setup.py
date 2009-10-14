@@ -1,8 +1,8 @@
 from setuptools import setup, find_packages
- 
+
 setup(
     name='django-app-plugins',
-    version='0.1.0',
+    version='0.1.1',
     description='',
     author='Doug Napoleone',
     author_email='doug.napoleone@gmail.com',
@@ -17,6 +17,9 @@ setup(
         'Programming Language :: Python',
         'Framework :: Django',
     ],
+    package_data = {
+        'app_plugins': ['templates/app_plugins/*.html'],
+    },
     include_package_data=True,
     zip_safe=False,
     install_requires=['setuptools'],
