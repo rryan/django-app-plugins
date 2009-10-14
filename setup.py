@@ -2,11 +2,15 @@ from setuptools import setup, find_packages
 
 setup(
     name='django-app-plugins',
-    version='0.1.1',
-    description='',
+    version=__import__('app_plugins').__version__,
+    description='Reusable django application for writting pluggable reusable '
+                'django applications.',
+    long_description=open('docs/overview.txt').read(),
     author='Doug Napoleone',
     author_email='doug.napoleone@gmail.com',
     url='http://code.google.com/p/django-app-plugins/',
+    license = 'MIT License',
+    platforms = ['any'],
     packages=find_packages(),
     classifiers=[
         'Development Status :: 3 - Alpha',
@@ -17,10 +21,6 @@ setup(
         'Programming Language :: Python',
         'Framework :: Django',
     ],
-    package_data = {
-        'app_plugins': ['templates/app_plugins/*.html'],
-    },
     include_package_data=True,
     zip_safe=False,
-    install_requires=['setuptools'],
 )

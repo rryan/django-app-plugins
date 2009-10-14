@@ -1,0 +1,25 @@
+==================
+django-app-plugins
+==================
+
+Many reusable django applications are intended to plug-into another set of
+applictions in a sites template framework. The connonical example of this is
+a preferences widget for the application which should be included with other
+preferences on a sites user preferences page. At the same time the author of
+the reusable applicaiton does not want to tightly couple their app to some
+specific larger framework, or require other people to use some third party
+package just to use their app.
+
+The project aims to provide a Django app for this sort of functionality. This
+includes:
+
+ * Reusable applicaitons need not require app_plugins for use.
+ * Provide 'plugin points' in templates for where to insert multiple plugins
+ * Optional administrative site-level control over the visiability, order, and control of plugins
+ * Optional user level control over the visibility and order of plugins (e.g. public profile page)
+
+Contents:
+
+.. toctree::
+
+    overview

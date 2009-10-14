@@ -1,11 +1,11 @@
-from django.core.exceptions import ImproperlyConfigured
-from django.utils.functional import curry
-from django.utils.datastructures import SortedDict
+"""
+"""
 
 libraries = {}
 
 def _register(lib, store, prefix, options, do_error, call):
     'generic module library registration decorator passthrough'
+    from django.utils.functional import curry
     if call is None:
         if do_error:
             raise RuntimeError, "No callable recieved."
@@ -32,6 +32,7 @@ def _register(lib, store, prefix, options, do_error, call):
 
 class Library(object):
     def __init__(self):
+        from django.utils.datastructures import SortedDict
         self.app_name = None
         self.point_calls = SortedDict()
         self.plugin_calls = SortedDict()
