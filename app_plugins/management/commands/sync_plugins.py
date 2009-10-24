@@ -102,7 +102,8 @@ def sync_app_plugins(delete_removed=False, verbosity=1):
 
     ## section 2 - removed plugin points
     for pp in instances.itervalues():
-        if pp.status != REMOVED:
+        # don't remove pps with active plugins!
+        if pp.status != REMOVED and not pp.plugin_set.exclude(status=REMOVED).count():
             pp.status = REMOVED
             pp.save()
             for p in pp.plugin_set.all():
@@ -115,7 +116,11 @@ def sync_app_plugins(delete_removed=False, verbosity=1):
     for app_label, lib in libraries.iteritems():
         for label in lib.plugins:
             p = instances.pop(label, None)
-            point_label = label[len(lib.app_name):]
+            # Don't forget the dot in label! Strip it out.
+            # We could increment slice index by 1, but I'm
+            # not sure if some labels/libs will have no app_name
+            # and thus no joining dot??
+            point_label = label[len(lib.app_name):].strip('.')
             if p is None:
                 p = Plugin()
                 p.label = label

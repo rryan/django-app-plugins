@@ -55,7 +55,7 @@ class Library(object):
         return _register(self, self.point_calls, '', options, False, call)
 
     def plugin(self, call=None, **options):
-        if not callable(call) and cal is not None:
+        if not callable(call) and call is not None:
             point_app = call
             call = None
         else:
