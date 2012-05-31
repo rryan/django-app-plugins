@@ -2,7 +2,7 @@
 """
 from library import Library
 
-VERSION = (0, 1, 2, "rc2")
+VERSION = (0, 1, 2, "rc3")
 
 def get_version():
     if VERSION[3] != "final":
