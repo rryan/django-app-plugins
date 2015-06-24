@@ -9,7 +9,7 @@ from django.utils.functional import curry
 from django.utils.encoding import smart_str
 from django.template import loader, VariableDoesNotExist, Variable, Node
 from django.template import TemplateDoesNotExist, TemplateSyntaxError
-from django.core.cache.backends.locmem import CacheClass as LocalMemCache
+from django.core.cache.backends.locmem import LocMemCache
 
 TAG_KEYWORD_ARGUMENT_SEPARATOR = '='
 
@@ -24,8 +24,8 @@ APP_PLUGINS_CACHE_PARAMS = getattr(settings, 'APP_PLUGINS_CACHE_PARAMS',
                                      'timeout': 60*60*24*3, # 3 days
                                      })
 
-app_plugin_apps_with_templates = LocalMemCache('localhost',
-                                               APP_PLUGINS_CACHE_PARAMS)
+app_plugin_apps_with_templates = LocMemCache('localhost',
+                                             APP_PLUGINS_CACHE_PARAMS)
 
 # at import cache the app names for indexing
 app_names = []
