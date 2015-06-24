@@ -137,7 +137,7 @@ def inclusion_kwdtag(register, file_name, context_class=Context,
                             t = loader.select_template(file_name)
                         else:
                             t = loader.get_template(file_name)
-                        self.nodelist = t.nodelist
+                        self.nodelist = t.template.nodelist
                     res = self.nodelist.render(context_class(new_context,
                             autoescape=context.autoescape))
                     context.pop() # local context
