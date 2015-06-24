@@ -158,8 +158,7 @@ register = template.Library()
 def template_exists(templ):
     if templ is None: return False
     try:
-        #loader.get_template(templ)
-        loader.find_template(templ)
+        loader.get_template(templ)
     except TemplateDoesNotExist:
         return False
     return True
